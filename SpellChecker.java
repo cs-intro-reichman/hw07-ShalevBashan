@@ -9,6 +9,18 @@ public class SpellChecker {
 		String correction = spellChecker(word, threshold, dictionary);
 		System.out.println(correction);
 	}
+	
+    public static String lowCaps (String string) {
+        String s = "";
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) >= 65 && string.charAt(i) <= 90) {
+				s += (char)(string.charAt(i) + 32);
+            } else {
+                s += (char)string.charAt(i);
+			}
+        }
+        return s;
+    }
 
 	public static String tail(String str) {
 		if (str.length() == 0 || str.length() == 1) return "";
@@ -20,8 +32,8 @@ public class SpellChecker {
 	}
 
 	public static int levenshtein(String word1, String word2) {
-		String a = word1;
-		String b = word2;
+		String a = lowCaps(word1);
+		String b = lowCaps(word2);
 		if (a.length() == 0) return b.length();
 		if (b.length() == 0) return a.length();
 		if (a.charAt(0) == b.charAt(0)) return levenshtein(tail(a), tail(b));
