@@ -11,25 +11,43 @@ public class SpellChecker {
 	}
 
 	public static String tail(String str) {
-		// Your code goes here
+		if (str.length() == 0 || str.length() == 1) return "";
+		String newStr = new String();
+		for (int i = 1; i < str.length(); i++) {
+			newStr += str.charAt(i);
+		}
+		return newStr;
 	}
 
 	public static int levenshtein(String word1, String word2) {
-		// Your code goes here
+		String a = word1;
+		String b = word2;
+		if (a.length() == 0) return b.length();
+		if (b.length() == 0) return a.length();
+		if (a.charAt(0) == b.charAt(0)) return levenshtein(tail(a), tail(b));
+		return 1 + Math.min(levenshtein(tail(a), b), Math.min(levenshtein(a, tail(b)), levenshtein(tail(a), tail(b))));
 	}
 
 	public static String[] readDictionary(String fileName) {
 		String[] dictionary = new String[3000];
-
 		In in = new In(fileName);
-
-		// Your code here
-
+		for (int i = 0; i < dictionary.length; i++) {
+			dictionary[i] = in.readLine();
+		}
 		return dictionary;
 	}
 
 	public static String spellChecker(String word, int threshold, String[] dictionary) {
-		// Your code goes here
+		int min = threshold + 1;
+		int at = -1;
+		for (int i  = 0; i < dictionary.length; i++) {
+			if (levenshtein(word, dictionary[i]) < min) {
+				min = levenshtein(word, dictionary[i]);
+				at = i;
+			}
+		}
+		if (min > threshold) return word;
+		return dictionary[at];
 	}
 
 }
